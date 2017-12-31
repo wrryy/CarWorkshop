@@ -11,7 +11,6 @@ public class User {
 	private Timestamp birthDate;
 	private static int counter = 0;
 
-	// loading from DB
 	public User() {
 	}
 

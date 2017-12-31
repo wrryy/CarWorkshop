@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnection {
-	private static String DB_URL = "jdbc:mysql://localhost:3306/CarWork?useSSL=false";
+private static String DB_URL =  "jdbc:mysql://localhost:3306/CarWorkshop?useSSL=false&useUnicode=yes&characterEncoding=UTF-8";
 	private static String DB_USER = "root";
 	private static String DB_PASS = "coderlsab";
 

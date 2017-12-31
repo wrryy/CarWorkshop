@@ -5,12 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import data.tables.Order;
-import data.tables.Status;
-import data.tables.Worker;
 
 public class OrderDao {
 	private static final String Create = "Insert into  order(receive_date, start_date, planned_start_date, problem_description, repair_description, "
@@ -29,7 +26,7 @@ public class OrderDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Order create(Connection connection, Order order) throws SQLException {
+	public static Order create(Connection connection, Order order) throws SQLException {
 		String[] generatedColumns = { "id" };
 		PreparedStatement pst = connection.prepareStatement(Create, generatedColumns);
 		pst.setTimestamp(1, order.getReceiveDate());
@@ -60,7 +57,7 @@ public class OrderDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Order update(Connection connection, Order order) throws SQLException {
+	public static Order update(Connection connection, Order order) throws SQLException {
 
 		PreparedStatement pst = connection.prepareStatement(Update);
 		pst.setTimestamp(1, order.getReceiveDate());
@@ -86,7 +83,7 @@ public class OrderDao {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public void delete(Connection connection, int id) throws SQLException {
+	public static void delete(Connection connection, int id) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(Delete);
 		preparedStatement.setInt(1, id);
 		preparedStatement.executeUpdate();
@@ -99,7 +96,7 @@ public class OrderDao {
 	 * @return Order[]
 	 * @throws SQLException
 	 */
-	static public Order[] getAll(Connection connection) throws SQLException {
+	public static Order[] getAll(Connection connection) throws SQLException {
 		ArrayList<Order> orders = new ArrayList<>();
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery(GetAll);
