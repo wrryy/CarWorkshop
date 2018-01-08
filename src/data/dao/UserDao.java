@@ -25,13 +25,13 @@ public class UserDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public User create(Connection connection, User user) throws SQLException {
+	public static User create(Connection connection, User user) throws SQLException {
 		String[] generatedColumns = { "id" };
 		PreparedStatement pst = connection.prepareStatement(Create, generatedColumns);
 		pst.setString(1, user.getFirstName());
 		pst.setString(2, user.getLastName());
 		pst.setString(3, user.getEmail());
-		pst.setTimestamp(4, user.getBirthDate());
+		pst.setString(4, user.getBirthDate());
 		pst.executeUpdate();
 		ResultSet rs = pst.getGeneratedKeys();
 		if (rs.next()) {
@@ -47,13 +47,13 @@ public class UserDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public User update(Connection connection, User user) throws SQLException {
+	public static User update(Connection connection, User user) throws SQLException {
 
 		PreparedStatement pst = connection.prepareStatement(Update);
 		pst.setString(1, user.getFirstName());
 		pst.setString(2, user.getLastName());
 		pst.setString(3, user.getEmail());
-		pst.setTimestamp(4, user.getBirthDate());
+		pst.setString(4, user.getBirthDate());
 		pst.setInt(5, user.getId());
 		pst.executeUpdate();
 		return user;
@@ -65,7 +65,7 @@ public class UserDao {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public void delete(Connection connection, int id) throws SQLException {
+	public static void delete(Connection connection, int id) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(Delete);
 		preparedStatement.setInt(1, id);
 		preparedStatement.executeUpdate();
@@ -89,7 +89,7 @@ public class UserDao {
 			tempUser.setFirstName(rs.getString("first_name"));
 			tempUser.setLastName(rs.getString("last_name"));
 			tempUser.setEmail(rs.getString("email"));
-			tempUser.setBirthDate(rs.getTimestamp("birth_date"));
+			tempUser.setBirthDate(rs.getString("birth_date"));
 			users.add(tempUser);
 		}
 		User[] userArray = new User[users.size()];
@@ -116,7 +116,7 @@ public class UserDao {
 			tempUser.setFirstName(rs.getString("first_name"));
 			tempUser.setLastName(rs.getString("last_name"));
 			tempUser.setEmail(rs.getString("email"));
-			tempUser.setBirthDate(rs.getTimestamp("birth_date"));
+			tempUser.setBirthDate(rs.getString("birth_date"));
 			return tempUser;
 		}
 		return null;

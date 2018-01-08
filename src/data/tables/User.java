@@ -1,21 +1,19 @@
 package data.tables;
 
-import java.sql.Timestamp;
-
 public class User {
 
 	private int id;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private Timestamp birthDate;
+	private String birthDate;
 	private static int counter = 0;
 
 	public User() {
 	}
 
 	// creating new User
-	public User(String firstName, String lastName, String email, Timestamp dateBirth) {
+	public User(String firstName, String lastName, String email, String dateBirth) {
 		this.id = counter + 1;
 		counter++;
 		this.firstName = firstName;
@@ -48,11 +46,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Timestamp getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Timestamp dateBirth) {
+	public void setBirthDate(String dateBirth) {
 		this.birthDate = dateBirth;
 	}
 

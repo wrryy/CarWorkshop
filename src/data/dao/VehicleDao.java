@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import data.tables.Vehicle;
 
 public class VehicleDao {
-	private static final String Create = "Insert into vehicle(model, brand, production_date, plate_number, service_date) Values(?,?,?,?,?)";
-	private static final String Update = "Update vehicle Set model=?, brand=?, production_date=?, plate_number=?, service_date=? Where id = ?";
+	private static final String Create = "Insert into vehicle(model, brand, production_date, plate_number, service_date, user_id) Values(?,?,?,?,?,?)";
+	private static final String Update = "Update vehicle Set model=?, brand=?, production_date=?, plate_number=?, service_date=?, user_id=? Where id = ?";
 	private static final String Delete = "DELETE FROM vehicle WHERE id = ?";
 	private static final String GetAll = "Select * FROM vehicle";
 	private static final String GetById = "SELECT * FROM vehicle where id =?";
+	private static final String GetByUserId = "SELECT * FROM vehicle where user_id =?";
 
 	/**
 	 * Inserts User to DB.
@@ -24,14 +25,15 @@ public class VehicleDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Vehicle create(Connection connection, Vehicle vehicle) throws SQLException {
+	public static Vehicle create(Connection connection, Vehicle vehicle) throws SQLException {
 		String[] generatedColumns = { "id" };
 		PreparedStatement pst = connection.prepareStatement(Create, generatedColumns);
 		pst.setString(1, vehicle.getModel());
 		pst.setString(2, vehicle.getBrand());
-		pst.setTimestamp(3, vehicle.getProductionDate());
+		pst.setString(3, vehicle.getProductionDate());
 		pst.setString(4, vehicle.getPlateNumber());
-		pst.setTimestamp(5, vehicle.getServiceDate());
+		pst.setString(5, vehicle.getServiceDate());
+		pst.setInt(6, vehicle.getUserId());
 		pst.executeUpdate();
 		ResultSet rs = pst.getGeneratedKeys();
 		if (rs.next()) {
@@ -48,15 +50,16 @@ public class VehicleDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Vehicle update(Connection connection, Vehicle vehicle) throws SQLException {
+	public static Vehicle update(Connection connection, Vehicle vehicle) throws SQLException {
 
 		PreparedStatement pst = connection.prepareStatement(Update);
 		pst.setString(1, vehicle.getModel());
 		pst.setString(2, vehicle.getBrand());
-		pst.setTimestamp(3, vehicle.getProductionDate());
+		pst.setString(3, vehicle.getProductionDate());
 		pst.setString(4, vehicle.getPlateNumber());
-		pst.setTimestamp(5, vehicle.getServiceDate());
-		pst.setInt(6, vehicle.getId());
+		pst.setString(5, vehicle.getServiceDate());
+		pst.setInt(6, vehicle.getUserId());
+		pst.setInt(7, vehicle.getId());
 		pst.executeUpdate();
 		return vehicle;
 	}
@@ -67,7 +70,7 @@ public class VehicleDao {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public void delete(Connection connection, int id) throws SQLException {
+	public static void delete(Connection connection, int id) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(Delete);
 		preparedStatement.setInt(1, id);
 		preparedStatement.executeUpdate();
@@ -91,8 +94,30 @@ public class VehicleDao {
 			tempVehicle.setBrand(rs.getString("brand"));
 			tempVehicle.setModel(rs.getString("model"));
 			tempVehicle.setPlateNumber(rs.getString("plate_number"));
-			tempVehicle.setProductionDate(rs.getTimestamp("production_date"));
-			tempVehicle.setServiceDate(rs.getTimestamp("service_date"));
+			tempVehicle.setProductionDate(rs.getString("production_date"));
+			tempVehicle.setServiceDate(rs.getString("service_date"));
+			tempVehicle.setUserId(rs.getInt("user_id"));
+			vehicles.add(tempVehicle);
+		}
+		Vehicle[] vehicleArray = new Vehicle[vehicles.size()];
+		vehicles.toArray(vehicleArray);
+		return vehicleArray;
+	}
+	static public Vehicle[] getByUserId(Connection connection, int userId) throws SQLException {
+		ArrayList<Vehicle> vehicles = new ArrayList<>();
+		PreparedStatement preparedStatement = connection.prepareStatement(GetByUserId);
+		preparedStatement.setInt(1, userId);
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			Vehicle tempVehicle = new Vehicle();
+			tempVehicle.setId(rs.getInt("id"));
+			tempVehicle.setBrand(rs.getString("brand"));
+			tempVehicle.setModel(rs.getString("model"));
+			tempVehicle.setPlateNumber(rs.getString("plate_number"));
+			tempVehicle.setProductionDate(rs.getString("production_date"));
+			tempVehicle.setServiceDate(rs.getString("service_date"));
+			tempVehicle.setUserId(rs.getInt("user_id"));
 			vehicles.add(tempVehicle);
 		}
 		Vehicle[] vehicleArray = new Vehicle[vehicles.size()];
@@ -119,10 +144,12 @@ public class VehicleDao {
 			tempVehicle.setBrand(rs.getString("brand"));
 			tempVehicle.setModel(rs.getString("model"));
 			tempVehicle.setPlateNumber(rs.getString("plate_number"));
-			tempVehicle.setProductionDate(rs.getTimestamp("production_date"));
-			tempVehicle.setServiceDate(rs.getTimestamp("service_date"));
+			tempVehicle.setProductionDate(rs.getString("production_date"));
+			tempVehicle.setServiceDate(rs.getString("service_date"));
+			tempVehicle.setUserId(rs.getInt("user_id"));
 			return tempVehicle;
 		}
 		return null;
 	}
+	
 }

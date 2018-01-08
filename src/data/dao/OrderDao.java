@@ -9,14 +9,16 @@ import java.util.ArrayList;
 
 import data.tables.Order;
 
-public class OrderDao {
-	private static final String Create = "Insert into  order(receive_date, start_date, planned_start_date, problem_description, repair_description, "
+public class OrderDao { 
+	private static final String Create = "Insert into  orderr(receive_date, start_date, planned_start_date, problem_description, repair_description, "
 			+ "status, worker_id, vehicle_id,worker_hour_cost,user_cost, parts_cost, man_hours) Values(?,?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String Update = "Update order Set receive_date=?, start_date=?, planned_start_date=?, problem_description=?, "
+	private static final String Update = "Update orderr Set receive_date=?, start_date=?, planned_start_date=?, problem_description=?, "
 			+ "repair_description=?,status=?, worker_id=?, vehicle_id=?,worker_hour_cost=?,user_cost=?, parts_cost=?, man_hours=? Where id = ?";
-	private static final String Delete = "DELETE FROM order WHERE id= ?";
-	private static final String GetAll = "Select * from order";
-	private static final String GetById = "SELECT * FROM order where id=?";
+	private static final String Delete = "DELETE FROM orderr WHERE id= ?";
+	private static final String GetAll = "SELECT * FROM orderr";
+	private static final String GetById = "SELECT * FROM orderr where id=?";
+	private static final String GetByVehicleId = "SELECT * FROM orderr WHERE vehicle_id=?";
+	private static final String GetByWorkerId = "SELECT * FROM orderr WHERE worker_id=?";
 
 	/**
 	 * Inserts Order to DB.
@@ -29,12 +31,12 @@ public class OrderDao {
 	public static Order create(Connection connection, Order order) throws SQLException {
 		String[] generatedColumns = { "id" };
 		PreparedStatement pst = connection.prepareStatement(Create, generatedColumns);
-		pst.setTimestamp(1, order.getReceiveDate());
-		pst.setTimestamp(2, order.getStartDate());
-		pst.setTimestamp(3, order.getPlannedStartDate());
+		pst.setString(1, order.getReceiveDate());
+		pst.setString(2, order.getStartDate());
+		pst.setString(3, order.getPlannedStartDate());
 		pst.setString(4, order.getProblemDescription());
 		pst.setString(5, order.getRepairDescription());
-		pst.setString(6, order.getStatus() + "");
+		pst.setString(6, order.getStatus());
 		pst.setInt(7, order.getWorkerId());
 		pst.setInt(8, order.getVehicleId());
 		pst.setDouble(9, order.getWorkerHourCost());
@@ -60,9 +62,9 @@ public class OrderDao {
 	public static Order update(Connection connection, Order order) throws SQLException {
 
 		PreparedStatement pst = connection.prepareStatement(Update);
-		pst.setTimestamp(1, order.getReceiveDate());
-		pst.setTimestamp(2, order.getStartDate());
-		pst.setTimestamp(3, order.getPlannedStartDate());
+		pst.setString(1, order.getReceiveDate());
+		pst.setString(2, order.getStartDate());
+		pst.setString(3, order.getPlannedStartDate());
 		pst.setString(4, order.getProblemDescription());
 		pst.setString(5, order.getRepairDescription());
 		pst.setString(6, order.getStatus() + "");
@@ -104,9 +106,9 @@ public class OrderDao {
 		while (rs.next()) {
 			Order tempOrder = new Order();
 			tempOrder.setId(rs.getInt("id"));
-			tempOrder.setReceiveDate(rs.getTimestamp("receive_date"));
-			tempOrder.setStartDate(rs.getTimestamp("start_date"));
-			tempOrder.setPlannedStartDate(rs.getTimestamp("planned_start_date"));
+			tempOrder.setReceiveDate(rs.getString("receive_date"));
+			tempOrder.setStartDate(rs.getString("start_date"));
+			tempOrder.setPlannedStartDate(rs.getString("planned_start_date"));
 			tempOrder.setProblemDescription(rs.getString("problem_description"));
 			tempOrder.setRepairDescription(rs.getString("repair_description"));
 			tempOrder.setStatus(rs.getString("status"));
@@ -140,9 +142,9 @@ public class OrderDao {
 		if (rs.next()) {
 			Order tempOrder = new Order();
 			tempOrder.setId(rs.getInt("id"));
-			tempOrder.setReceiveDate(rs.getTimestamp("receive_date"));
-			tempOrder.setStartDate(rs.getTimestamp("start_date"));
-			tempOrder.setPlannedStartDate(rs.getTimestamp("planned_start_date"));
+			tempOrder.setReceiveDate(rs.getString("receive_date"));
+			tempOrder.setStartDate(rs.getString("start_date"));
+			tempOrder.setPlannedStartDate(rs.getString("planned_start_date"));
 			tempOrder.setProblemDescription(rs.getString("problem_description"));
 			tempOrder.setRepairDescription(rs.getString("repair_description"));
 			tempOrder.setStatus(rs.getString("status"));
@@ -155,5 +157,60 @@ public class OrderDao {
 			return tempOrder;
 		}
 		return null;
+	}
+	
+	static public Order[] getByVehicleId(Connection connection, int workerId) throws SQLException {
+		ArrayList<Order> orders = new ArrayList<>();
+		PreparedStatement preparedStatement = connection.prepareStatement(GetByVehicleId);
+		preparedStatement.setInt(1, workerId);
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			Order tempOrder = new Order();
+			tempOrder.setId(rs.getInt("id"));
+			tempOrder.setReceiveDate(rs.getString("receive_date"));
+			tempOrder.setStartDate(rs.getString("start_date"));
+			tempOrder.setPlannedStartDate(rs.getString("planned_start_date"));
+			tempOrder.setProblemDescription(rs.getString("problem_description"));
+			tempOrder.setRepairDescription(rs.getString("repair_description"));
+			tempOrder.setStatus(rs.getString("status"));
+			tempOrder.setWorkerId(rs.getInt("worker_id"));
+			tempOrder.setVehicleId(rs.getInt("vehicle_id"));
+			tempOrder.setWorkerHourCost(rs.getDouble("worker_hour_cost"));
+			tempOrder.setUserCost(rs.getDouble("user_cost"));
+			tempOrder.setPartsCost(rs.getDouble("parts_cost"));
+			tempOrder.setManHours(rs.getDouble("man_hours"));
+			orders.add(tempOrder);
+		}
+		Order[] orderArray = new Order[orders.size()];
+		orders.toArray(orderArray);
+		return orderArray;
+	}
+	static public Order[] getByWorkerId(Connection connection, int workerId) throws SQLException {
+		ArrayList<Order> orders = new ArrayList<>();
+		PreparedStatement preparedStatement = connection.prepareStatement(GetByWorkerId);
+		preparedStatement.setInt(1, workerId);
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			Order tempOrder = new Order();
+			tempOrder.setId(rs.getInt("id"));
+			tempOrder.setReceiveDate(rs.getString("receive_date"));
+			tempOrder.setStartDate(rs.getString("start_date"));
+			tempOrder.setPlannedStartDate(rs.getString("planned_start_date"));
+			tempOrder.setProblemDescription(rs.getString("problem_description"));
+			tempOrder.setRepairDescription(rs.getString("repair_description"));
+			tempOrder.setStatus(rs.getString("status"));
+			tempOrder.setWorkerId(rs.getInt("worker_id"));
+			tempOrder.setVehicleId(rs.getInt("vehicle_id"));
+			tempOrder.setWorkerHourCost(rs.getDouble("worker_hour_cost"));
+			tempOrder.setUserCost(rs.getDouble("user_cost"));
+			tempOrder.setPartsCost(rs.getDouble("parts_cost"));
+			tempOrder.setManHours(rs.getDouble("man_hours"));
+			orders.add(tempOrder);
+		}
+		Order[] orderArray = new Order[orders.size()];
+		orders.toArray(orderArray);
+		return orderArray;
 	}
 }

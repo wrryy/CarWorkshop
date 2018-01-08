@@ -1,4 +1,4 @@
-package servlets.order;
+package servlets.vehicle;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,24 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import data.dao.OrderDao;
-import data.tables.Order;
+import data.dao.VehicleDao;
+import data.tables.Vehicle;
 import system.DbConnection;
 
-/**
- * Servlet implementation class Home
- */
-@WebServlet("/readOrder")
-public class ReadOrder extends HttpServlet {
+@WebServlet("/readvehicle")
+public class ReadVehicle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try(Connection connection = DbConnection.connect()){
-		Order[] orders = OrderDao.getAll(connection) ;
-		request.setAttribute("orders", orders);
-		String readMode = "List of All Orders";
+			Vehicle[] vehicles = VehicleDao.getAll(connection) ;
+		request.setAttribute("orders", vehicles);
+		String readMode = "List of All Vehicles";
 		request.setAttribute("rm", readMode);
-		getServletContext().getRequestDispatcher("/WEB-INF/order/readOrder.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/WEB-INF/vehicle/readVehicle.jsp").forward(request, response);
 
 		}catch (SQLException e) {
 			e.printStackTrace();

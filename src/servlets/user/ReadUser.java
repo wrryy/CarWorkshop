@@ -1,4 +1,4 @@
-package servlets.order;
+package servlets.user;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,24 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import data.dao.OrderDao;
-import data.tables.Order;
+import data.dao.UserDao;
+import data.tables.User;
 import system.DbConnection;
 
-/**
- * Servlet implementation class Home
- */
-@WebServlet("/readOrder")
-public class ReadOrder extends HttpServlet {
+@WebServlet("/readuser")
+public class ReadUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try(Connection connection = DbConnection.connect()){
-		Order[] orders = OrderDao.getAll(connection) ;
-		request.setAttribute("orders", orders);
-		String readMode = "List of All Orders";
-		request.setAttribute("rm", readMode);
-		getServletContext().getRequestDispatcher("/WEB-INF/order/readOrder.jsp").forward(request, response);
+		User[] users = UserDao.getAll(connection) ;
+		request.setAttribute("orders", users);
+		getServletContext().getRequestDispatcher("/WEB-INF/user/readUser.jsp").forward(request, response);
 
 		}catch (SQLException e) {
 			e.printStackTrace();

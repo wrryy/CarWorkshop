@@ -1,26 +1,25 @@
 package data.tables;
 
-import java.sql.Timestamp;
-
 public class Vehicle {
 	private int id;
 	private static int counter = 0;
+	private int userId;
 	private String model;
 	private String brand;
-	private Timestamp productionDate;
+	private String productionDate;
 	private String plateNumber;
-	private Timestamp serviceDate;
+	private String serviceDate;
 	
 	public Vehicle() {}
 
-	public Vehicle(String model, String brand, Timestamp productionDate, String plateNumber,
-			Timestamp serviceDate) {
+	public Vehicle(String model, String brand, String productionDate, String plateNumber,
+			String serviceDate) {
 		this.id = counter + 1;
 		counter++;
 		this.model = model;
 		this.brand = brand;
-		this.productionDate = productionDate;
 		this.plateNumber = plateNumber;
+		this.productionDate = productionDate;
 		this.serviceDate = serviceDate;
 	}
 
@@ -40,11 +39,11 @@ public class Vehicle {
 		this.brand = brand;
 	}
 
-	public Timestamp getProductionDate() {
+	public String getProductionDate() {
 		return productionDate;
 	}
 
-	public void setProductionDate(Timestamp productionDate) {
+	public void setProductionDate(String productionDate) {
 		this.productionDate = productionDate;
 	}
 
@@ -56,11 +55,11 @@ public class Vehicle {
 		this.plateNumber = plateNumber;
 	}
 
-	public Timestamp getServiceDate() {
+	public String getServiceDate() {
 		return serviceDate;
 	}
 
-	public void setServiceDate(Timestamp serviceDate) {
+	public void setServiceDate(String serviceDate) {
 		this.serviceDate = serviceDate;
 	}
 
@@ -71,5 +70,12 @@ public class Vehicle {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 }

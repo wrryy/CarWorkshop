@@ -25,7 +25,7 @@ public class WorkerDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Worker create(Connection connection, Worker worker) throws SQLException {
+	public static Worker create(Connection connection, Worker worker) throws SQLException {
 		String[] generatedColumns = { "id" };
 		PreparedStatement pst = connection.prepareStatement(Create, generatedColumns);
 		pst.setString(1, worker.getFirstName());
@@ -49,7 +49,7 @@ public class WorkerDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Worker update(Connection connection, Worker worker) throws SQLException {
+	public static Worker update(Connection connection, Worker worker) throws SQLException {
 
 		PreparedStatement pst = connection.prepareStatement(Update);
 		pst.setString(1, worker.getFirstName());
@@ -69,7 +69,7 @@ public class WorkerDao {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public void delete(Connection connection, int id) throws SQLException {
+	public static void delete(Connection connection, int id) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(Delete);
 		preparedStatement.setInt(1, id);
 		preparedStatement.executeUpdate();

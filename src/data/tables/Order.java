@@ -1,13 +1,11 @@
 package data.tables;
 
-import java.sql.Timestamp;
-
 public class Order {
 	private int id;
 	private static int counter = 0;
-	private Timestamp receiveDate;
-	private Timestamp startDate;
-	private Timestamp plannedStartDate;
+	private String receiveDate;
+	private String startDate;
+	private String plannedStartDate;
 	private String problemDescription;
 	private String repairDescription;
 	private String status;
@@ -20,7 +18,7 @@ public class Order {
 	
 	public Order() {}
 
-	public Order(Timestamp receiveDate, Timestamp startDate, Timestamp plannedStartDate,
+	public Order(String receiveDate, String startDate, String plannedStartDate,
 			String problemDescription, String repairDescription, String status, int workerId, double workerHourCost,
 			int vehicleId, double userCost, double partsCost, double manHour) {
 		this.id = counter + 1;
@@ -39,27 +37,27 @@ public class Order {
 		this.manHours = manHour;
 	}
 
-	public Timestamp getReceiveDate() {
+	public String getReceiveDate() {
 		return receiveDate;
 	}
 
-	public void setReceiveDate(Timestamp receiveDate) {
+	public void setReceiveDate(String receiveDate) {
 		this.receiveDate = receiveDate;
 	}
 
-	public Timestamp getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Timestamp startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Timestamp getPlannedStartDate() {
+	public String getPlannedStartDate() {
 		return plannedStartDate;
 	}
 
-	public void setPlannedStartDate(Timestamp plannedStartDate) {
+	public void setPlannedStartDate(String plannedStartDate) {
 		this.plannedStartDate = plannedStartDate;
 	}
 
